@@ -628,13 +628,15 @@ const [page, setPage] = useState(1);
 
 import api from "../api/axios";
 useEffect(() => {
-  api.get(`/api/products?page=${page}&limit=20`)
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/api/products?page=${page}&limit=20`)
     .then(res => {
       setProducts(res.data.products);
       setPagination(res.data.pagination);
     })
     .catch(err => console.error(err));
 }, [page]);
+
 
 return (
   <>
