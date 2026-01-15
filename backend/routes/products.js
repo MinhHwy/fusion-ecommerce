@@ -632,5 +632,50 @@ router.put('/:id/rating', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+// API EXPORT ALL PRODUCTS TO JSON FILE
+router.get("/export/json", async (req, res) => {
+  try {
+    // 1. Lấy toàn bộ sản phẩm từ MongoDB
+    const products = await Product.find({});
+
+    // 2. Cấu hình header để trình duyệt tải file
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=products.json"
+    );
+
+    // 3. Trả dữ liệu về
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({
+      message: "Export products failed",
+      error: error.message,
+    });
+  }
+});
+/**
+ * GET PRODUCTS BY USER ID
+ * GET /api/products/by-user/:userId
+ */
+router.get("/by-user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const products = await Product.find({ user: userId });
+
+    res.json({
+      userId,
+      total: products.length,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Cannot get products by user",
+      error: error.message,
+    });
+  }
+});
+
 
 module.exports = router;

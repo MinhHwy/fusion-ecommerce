@@ -1,6 +1,9 @@
 require('dotenv').config();
 
 const express = require('express');
+const userRoutes = require("./routes/userRoutes");
+
+
 const cors = require('cors');
 const mongoose = require('mongoose');
 const seedDB = require('./seed/productSeeds');
@@ -76,6 +79,9 @@ setupSwaggerUi(app);
 
 // Routes
 app.use('/api/products', productRoutes);
+app.use("/api/users", userRoutes);
+
+
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/search', require('./routes/search'));
