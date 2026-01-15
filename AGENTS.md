@@ -626,12 +626,14 @@ router.get('/', async (req, res) => {
 ```jsx
 const [page, setPage] = useState(1);
 
+import api from "../api/axios";
 useEffect(() => {
-  axios.get(`/api/products?page=${page}&limit=20`)
+  api.get(`/api/products?page=${page}&limit=20`)
     .then(res => {
       setProducts(res.data.products);
       setPagination(res.data.pagination);
-    });
+    })
+    .catch(err => console.error(err));
 }, [page]);
 
 return (
