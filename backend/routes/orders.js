@@ -124,5 +124,19 @@ router.post('/track', async (req, res) => {
     res.status(500).json({ error: 'Unable to fetch order status right now.' });
   }
 });
+// GET all orders by email
+router.get('/by-email/:email', async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    const orders = await Order.find({ email });
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ error: 'Cannot fetch orders' });
+  }
+});
+
+
 
 module.exports = router;
