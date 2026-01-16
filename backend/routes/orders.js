@@ -136,6 +136,15 @@ router.get('/by-email/:email', async (req, res) => {
     res.status(500).json({ error: 'Cannot fetch orders' });
   }
 });
+// GET all orders (admin / testing)
+router.get('/', async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ error: 'Cannot fetch orders' });
+  }
+});
 
 
 
