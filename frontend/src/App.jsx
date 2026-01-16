@@ -122,7 +122,7 @@ function App() {
     const fetchProducts = async () => {
       setError(null);
       try {
-        const { data } = await withRetry(() => apiClient.get('products'));
+        const { data } = await withRetry(() => apiClient.get('/products'));
         if (!Array.isArray(data)) {
           throw new Error('Unexpected products response.');
         }
