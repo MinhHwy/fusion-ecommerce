@@ -10,7 +10,7 @@ const resolveBaseURL = () => {
     return '/api';
   }
 
-  return 'https://fusion-electronics-api.vercel.app/api';
+  return 'https://fusion-ecommerce.onrender.com/api';
 };
 
 export const API_BASE_URL = resolveBaseURL();
