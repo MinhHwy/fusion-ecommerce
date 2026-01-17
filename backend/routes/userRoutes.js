@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const { protect } = require("../middleware/auth");
 
 const router = express.Router();
 const User = require("../models/user");
@@ -8,6 +9,10 @@ const User = require("../models/user");
 router.get("/test", (req, res) => {
     res.json({ message: "User route is working" });
 });
+router.get("/me", protect, (req, res) => {
+  res.json(req.user);
+});
+
 
 // REGISTER USER
 router.post("/register", async (req, res) => {
