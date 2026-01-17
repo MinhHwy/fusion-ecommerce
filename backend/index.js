@@ -83,6 +83,6 @@ app.use("/api/users", userRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/search', require('./routes/search'));
-//app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 module.exports = app;
