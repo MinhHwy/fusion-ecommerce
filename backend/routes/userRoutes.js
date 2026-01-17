@@ -70,6 +70,7 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 // GET user by id
 router.get('/id/:id', async (req, res) => {
   try {
