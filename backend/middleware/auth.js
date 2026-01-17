@@ -16,7 +16,7 @@ const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 // 👇 LOG 2: xem payload giải mã được
       console.log("Decoded:", decoded);
-      const user = await User.findById(decoded.id).select("-password");
+      const user = await User.findById(decoded.user.id).select("-password");
 // 👇 LOG 3 (khuyến nghị)
       console.log("User from DB:", user);
       // 🔥 BẮT BUỘC kiểm tra
