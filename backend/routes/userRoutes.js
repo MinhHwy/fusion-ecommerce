@@ -84,18 +84,10 @@ router.post("/login", async (req, res) => {
 // });
 
 // ✅ GET USER FROM TOKEN
-router.get("/me", protect, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select("-password");
-    if (!user) {
-      return res.status(404).json({ msg: "User not found" });
-    }
-    res.json(user);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: "Server error" });
-  }
-})
+router.get("/me", protect, (req, res) => {
+  res.json(req.user);
+});
+
 // GET user by id
 router.get('/id/:id', async (req, res) => {
   try {
