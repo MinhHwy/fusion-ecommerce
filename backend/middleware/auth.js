@@ -1,19 +1,32 @@
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET;
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
-// Authentication middleware for protected routes
-module.exports = function (req, res, next) {
-  const token = req.header('x-auth-token');
+const protect = (req, res, next) => {
+  let token;
+
+  // 1. Bearer token
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer ")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+  // 2. fallback x-auth-token
+  else if (req.header("x-auth-token")) {
+    token = req.header("x-auth-token");
+  }
+
   if (!token) {
-    return res.status(401).json({ msg: 'No token, authorization denied' });
+    return res.status(401).json({ msg: "No token, authorization denied" });
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded.user;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // 👈 decoded = { id, role, ... }
     next();
   } catch (err) {
-    res.status(401).json({ msg: 'Token is not valid' });
+    res.status(401).json({ msg: "Token is not valid" });
   }
 };
+
 module.exports = { protect };

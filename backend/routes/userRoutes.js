@@ -9,9 +9,7 @@ const User = require("../models/user");
 router.get("/test", (req, res) => {
     res.json({ message: "User route is working" });
 });
-router.get("/me", protect, (req, res) => {
-  res.json(req.user);
-});
+
 
 
 // REGISTER USER
@@ -70,10 +68,9 @@ router.get("/me", protect, async (req, res) => {
     }
     res.json(user);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ msg: "Server error" });
   }
 });
-
 
 module.exports = router;
