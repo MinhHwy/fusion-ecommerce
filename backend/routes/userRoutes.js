@@ -71,6 +71,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/me", protect, (req, res) => {
+  res.json(req.user);
+});
+
+
 // GET user by id
 router.get('/id/:id', async (req, res) => {
   try {
@@ -94,7 +99,7 @@ router.get('/id/:id', async (req, res) => {
   }
 });
 // ✅ GET USER FROM TOKEN
-router.get("/me", protect, async (req, res) => {
+/*router.get("/me", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) {
@@ -105,6 +110,6 @@ router.get("/me", protect, async (req, res) => {
     console.error(err);
     res.status(500).json({ msg: "Server error" });
   }
-});
+});*/
 
 module.exports = router;
