@@ -1,9 +1,6 @@
 require('dotenv').config();
 
 const express = require('express');
-const userRoutes = require("./routes/userRoutes");
-
-
 const cors = require('cors');
 const mongoose = require('mongoose');
 const seedDB = require('./seed/productSeeds');
@@ -13,6 +10,7 @@ const checkoutRoutes = require('./routes/checkout');
 const orderRoutes = require('./routes/orders');
 const authRoutes = require('./routes/auth');
 const { swaggerUi, swaggerSpec, setupSwaggerUi, setupSwaggerJson } = require('./docs/swagger');
+const userRoutes = require("./routes/userRoutes");
 
 // Create Express App
 const app = express();
@@ -85,6 +83,6 @@ app.use("/api/users", userRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/search', require('./routes/search'));
-app.use('/api/auth', authRoutes);
+//app.use('/api/auth', authRoutes);
 
 module.exports = app;

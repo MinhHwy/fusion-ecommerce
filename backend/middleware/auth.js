@@ -1,31 +1,29 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-const protect = (req, res, next) => {
+const protect = async (req, res, next) => {
   let token;
 
-  // 1. Bearer token
-  if (
+   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer ")
+    req.headers.authorization.startsWith("Bearer")
   ) {
-    token = req.headers.authorization.split(" ")[1];
-  }
-  // 2. fallback x-auth-token
-  else if (req.header("x-auth-token")) {
-    token = req.header("x-auth-token");
+    try {
+      token = req.headers.authorization.split(" ")[1];
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      req.user = await User.findById(decoded.id).select("-password");
+
+      next();
+    } catch (error) {
+      console.error(error);
+      return res.status(401).json({ message: "Not authorized, token failed" });
+    }
   }
 
   if (!token) {
-    return res.status(401).json({ msg: "No token, authorization denied" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // 👈 decoded = { id, role, ... }
-    next();
-  } catch (err) {
-    res.status(401).json({ msg: "Token is not valid" });
+    return res.status(401).json({ message: "Not authorized, no token" });
   }
 };
 
