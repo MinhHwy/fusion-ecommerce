@@ -4,6 +4,8 @@ const { protect } = require("../middleware/auth");
 
 const router = express.Router();
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+
 
 // TEST ROUTE
 router.get("/test", (req, res) => {
@@ -52,10 +54,15 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    // ✅ CHỈ LẤY _id
+    const payload = {
+      id: user._id
+    };
+
     const token = jwt.sign(
-      { id: user._id },
+      payload,
       process.env.JWT_SECRET,
-      { expiresIn: "30d" }
+      { expiresIn: "48h" }
     );
 
     res.json({
@@ -63,8 +70,9 @@ router.post("/login", async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token,
+      token
     });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
