@@ -71,7 +71,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/me", protect, (req, res) => {
+router.get("/me", protect, async (req, res) => {
   res.json(req.user);
 });
 
