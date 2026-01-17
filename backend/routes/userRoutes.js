@@ -71,11 +71,23 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// router.get("/me", protect, async (req, res) => {
+//   res.json(req.user);
+// });
+
+// ✅ GET USER FROM TOKEN
 router.get("/me", protect, async (req, res) => {
-  res.json(req.user);
-});
-
-
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
+})
 // GET user by id
 router.get('/id/:id', async (req, res) => {
   try {
@@ -98,18 +110,6 @@ router.get('/id/:id', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-// ✅ GET USER FROM TOKEN
-/*router.get("/me", protect, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select("-password");
-    if (!user) {
-      return res.status(404).json({ msg: "User not found" });
-    }
-    res.json(user);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: "Server error" });
-  }
-});*/
+
 
 module.exports = router;
